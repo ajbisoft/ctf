@@ -64,17 +64,45 @@ nmap -sn -R <targets>
 
 #### TCP SYN scan
 
-Scan 100 most common ports in random order:
-nmap -sS -F <target>
+##### Regular scans
 
-Scan 1000 most common ports in random order:
-nmap -sS <target>
+- Scan 100 most common ports in random order:
+  nmap -sS -F <target>
 
-Scan all ports in random order:
-nmap -sS -p- <target>
+- Scan 1000 most common ports in random order:
+  nmap -sS <target>
 
-Scan 100 most common ports in paranoid mode:
-namp -sS -F -T0 <target>
+- Scan all ports in random order:
+  nmap -sS -p- <target>
+
+- Scan 100 most common ports (-F) in paranoid mode (-T0):
+  namp -sS -F -T0 <target>
+
+##### Advanced scans
+
+- Null Scan - no flags sent. No reply port open|filtered:
+  nmap -sN <target>
+
+- FIN Scan - FIN flag sent. No reply port open|filtered:
+  nmap -sF <target>
+
+- Xmas Scan - FIN, PSH, URG flags sent.  No reply port open|filtered:
+  nmap -sX <target>
+
+- ACK Scan - ACK flag send. RST on open|closed port. Will detect firewall rules, by marking open/closed ports as unfiltered:
+  nmap -sA <target>
+
+- Window Scan - like ACK scan, but window field is checked. Will detect firewall rules, by marking open/closed ports as closed:
+  nmap -sW <target>
+
+- Spoofed scan - sends a packet with a spoofed source IP address to the target machine and intercepts response by monitoring replies sent to spoofed IP
+  nmap -e <NET_INTERFACE> -Pn -S <SPOOFED_IP> <target>
+
+- Decoy scan - hides among spoofed IPs making it harder to detect orgin of portscan
+  nmap -D 10.10.0.1,10.10.0.2,RND,RND,ME 10.10.51.159
+
+- Idle/zombie scan - uses IP ID of zombie host while spoofing it's address to scan target. Zombie host must be 100% idle, like a network printer.
+  nmap -sI <ZOMBIE_IP> <target>
 
 #### UDP scan
 
