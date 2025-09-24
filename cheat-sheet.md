@@ -4,59 +4,82 @@
 
 ## Active
 
-### Host discovery via ARP Scan
+### Host discovery
+
+#### Host discovery via ARP Scan
 
 Scan hosts in local subnet:
 
-#### Use arp-scan
+##### Use arp-scan
 
 arp-scan -l
 
 arp-scan -l -I eth0
 
-#### Use nmap
+##### Use nmap
 
 nmap -sn -PR <targets>
 
-### Host discovery via ICMP scan
+#### Host discovery via ICMP scan
 
-#### ICMP Ping scan (ICMP Type8/0):
+##### ICMP Ping scan (ICMP Type8/0):
 
 nmap -sn -PE <targets>
 
-#### ICMP Timestamp (ICMP Type 13/14):
+##### ICMP Timestamp (ICMP Type 13/14):
 
 nmap -sn -PP <targets>
 
-#### ICMP Address Mask (ICMP Type 17/18):
+##### ICMP Address Mask (ICMP Type 17/18):
 
 nmap -sn -PM <targets>
 
-### Host discovery via TCP/UDP
+#### Host discovery via TCP/UDP
 
-#### TCP SYN ping (<ports> optional; port 80 by default):
+##### TCP SYN ping (<ports> optional; port 80 by default):
 
 nmap -sn -PS<ports> <targets>
 
-#### TCP ACK ping (<ports> optional; port 80 by default, needs root priv):
+##### TCP ACK ping (<ports> optional; port 80 by default, needs root priv):
 
 nmap -sn -PA<ports> <targets>
 
-#### UDP ping
+##### UDP ping
 
 nmap -sn -PU <targets>
 
-#### masscan
+##### masscan
 
 To use masscan as host discovery we limit ports with `-p`:
 
 masscan -p<port> <targets>
 
-### Host discovery via Reverse-DNS Lookup
+#### Host discovery via Reverse-DNS Lookup
 
 Query DNS server even for offline hosts:
 
 nmap -sn -R <targets>
+
+### Port scan
+
+#### TCP SYN scan
+
+Scan 100 most common ports in random order:
+nmap -sS -F <target>
+
+Scan 1000 most common ports in random order:
+nmap -sS <target>
+
+Scan all ports in random order:
+nmap -sS -p- <target>
+
+Scan 100 most common ports in paranoid mode:
+namp -sS -F -T0 <target>
+
+#### UDP scan
+
+Scan 100 most common ports in random order:
+nmap -sU -F <target>
 
 # Reverse shell
 
