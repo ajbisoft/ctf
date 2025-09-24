@@ -8,22 +8,55 @@
 
 Scan hosts in local subnet:
 
+#### Use arp-scan
+
 arp-scan -l
 
 arp-scan -l -I eth0
 
-or
+#### Use nmap
 
 nmap -sn -PR <targets>
 
 ### Host discovery via ICMP scan
 
-ICMP Ping scan:
+#### ICMP Ping scan (ICMP Type8/0):
 
 nmap -sn -PE <targets>
 
-ICMP 
+#### ICMP Timestamp (ICMP Type 13/14):
 
+nmap -sn -PP <targets>
+
+#### ICMP Address Mask (ICMP Type 17/18):
+
+nmap -sn -PM <targets>
+
+### Host discovery via TCP/UDP
+
+#### TCP SYN ping (<ports> optional; port 80 by default):
+
+nmap -sn -PS<ports> <targets>
+
+#### TCP ACK ping (<ports> optional; port 80 by default, needs root priv):
+
+nmap -sn -PA<ports> <targets>
+
+#### UDP ping
+
+nmap -sn -PU <targets>
+
+#### masscan
+
+To use masscan as host discovery we limit ports with `-p`:
+
+masscan -p<port> <targets>
+
+### Host discovery via Reverse-DNS Lookup
+
+Query DNS server even for offline hosts:
+
+nmap -sn -R <targets>
 
 # Reverse shell
 
