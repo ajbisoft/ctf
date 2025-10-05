@@ -54,9 +54,33 @@ GPT is divided into:
 
 ### Disk Imaging Tools
 
-- `dd` and `dc3dd`: These command-line utilities create exact bit-by-bit copies of hard drives. While dd is the foundational tool, dc3dd offers additional forensic features such as progress indicators, error handling, and integrated hashing, making it more suitable for forensic tasks where data integrity and visibility are critical.
+#### dc3dd
+
+`dc3dd` is an enhanced version of `dd` with additional features for forensic imaging, including hashing and logging.
+Example usage:
+
+`dc3dd if=/dev/loop1 of=example1.img log=imaging_loop1.txt`
+
+#### Other tools
+
+- `dd`: A standard Unix utility for copying and converting files, often used for creating raw disk images
+- `ddrescue`: A data recovery tool that efficiently copies data from damaged drives, attempting to rescue as much data as possible
 - `Guymager`: A GUI-based imaging tool for Linux systems that supports multiple image formats (e.g. E01, AFF, raw). It provides built-in write-blocking functionality, calculates MD5/SHA1 checksums during acquisition, and logs all imaging steps. Guymager is suitable for both live and offline imaging and is known for its simplicity and speed.
 - `FTK Imager`: A widely used forensic imaging and preview tool that supports imaging from various media types (e.g., hard drives, USBs, optical media). FTK Imager allows investigators to preview files and folders before imaging, mount disk images for read-only access, and generate multiple image formats while computing hash values for integrity verification.
+- `EWF tools (ewfacquire)`: Tools for creating and handling Expert Witness Format (EWF) images, often used in digital forensics
+
+#### Integrity check:
+
+Calculate MD5 sum of target device and image file to confirm integrity of data:
+
+```
+md5sum example1.img
+md5sum /dev/loop1
+```
+
+#### Mounting image
+
+`mount -o loop example1.img /mnt/example1`
 
 ### Disk Image Analysis Tools
 
