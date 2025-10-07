@@ -130,7 +130,9 @@ Full connect port scan with version detection. You can control the intensity wit
 
 `nmap -sS -O <target>`
 
-### Custom scripts / vulnerability detection
+## Vulnerability detection
+
+### Nmap custom scripts
 
 All scripts (600+) are located in `/usr/share/nmap/scripts`.
 
@@ -171,3 +173,83 @@ All scripts (600+) are located in `/usr/share/nmap/scripts`.
 - Script Kiddie special 31337 mode, just for laughs:
   
   `nmap -sS -oS <target>`
+
+### Nessus
+
+**Nessus** is a scanner that helps identify vulnerabilities, misconfigurations, and compliance issues. It is used to scan networks for known vulnerabilities and generate detailed reports for remediation.
+Source: https://www.tenable.com/
+
+### OpenVAS
+
+OpenVAS is a highly capable and powerful vulnerability testing solution.
+
+#### Installation
+
+Installing OpenVAS is very straightforward. Run the apt install and then run the configure script.
+
+```
+root@kali:~# apt-get install openvas
+root@kali:~# openvas-setup
+/var/lib/openvas/private/CA created
+/var/lib/openvas/CA created
+
+[i] This script synchronizes an NVT collection with the 'OpenVAS NVT Feed'.
+[i] Online information about this feed: 'https://www.openvas.org/openvas-nvt-feed
+...
+sent 1052 bytes received 64342138 bytes 99231.26 bytes/sec
+total size is 64342138 speedup is 1.00
+[i] Initializing scap database
+[i] Updating CPEs
+[i] Updating /var/lib/openvas/scap-data/nvdcve-2.0-2002.xml
+[i] Updating /var/lib/openvas/scap-data/nvdcve-2.0-2003.xml
+...
+Write out database with 1 new entries
+Data Base Updated
+Restarting Greenbone Security Assistant: gsad.
+User created with password '* password that looks like uuid *'.
+```
+
+#### Accessing the OpenVAS Web Interface
+
+The OpenVAS Web Interface (gsad) runs on TCP port 9392. However depending on your installation it could also be listening on TCP 443. After installation this can be confirmed by checking the listening ports on your system.
+
+```
+root@localhost:/# netstat -alnp | grep LISTEN
+
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      3692/redis-server 1
+tcp        0      0 0.0.0.0:9391            0.0.0.0:*               LISTEN      13806/openvassd: Wa
+tcp        0      0 0.0.0.0:1337            0.0.0.0:*               LISTEN      3656/sshd
+tcp6       0      0 :::9390                 :::*                    LISTEN      13804/openvasmd
+tcp6       0      0 :::443                  :::*                    LISTEN      28020/gsad
+```
+#### OpenVAS NVT Updates
+
+The key command for updating NVT's on the system is openvas-nvt-sync. Ensure the full process below is followed. However, as without the rebuilding of the NVT cache /var/cache/openvas/, the new updated checks will not be used by the scanner.
+
+`root@localhost:~/# openvas-nvt-sync`
+
+After syncing the latest NVT's, it is necessary to have the OpenVAS manager update its NVT cache. This is done with the following:
+`openvasmd --update` if the manager is running
+or
+`openvasmd --rebuild` with the manager stopped. This second option is much faster.
+
+```
+root@localhost:~/# ps -ef | grep openvas
+** get the pid **
+root@localhost:~/# kill $pid_of_openvassd
+root@localhost:~/# kill $pid_of_openvasmd
+root@localhost:~/# openvasmd --rebuild
+root@localhost:~/# openvasmd
+root@localhost:~/# openvassd
+root@localhost:~/# ps -ef | grep openvas
+root     13804     1  7 Nov10 ?        05:56:12 openvasmd
+root     13806     1  0 Nov10 ?        00:02:12 openvassd: Waiting for incoming connections
+```
+
+With the above process output we can see that the update has been successful. The Scanner and Manager are ready to start scanning.
+
+#### More info:
+
+https://hackertarget.com/openvas-tutorial-tips/

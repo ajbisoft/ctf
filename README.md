@@ -3,6 +3,7 @@
 ## My CTF/Pentesting notes aka cheat-sheet:
 
 - Reconnaissance
+  - [Passive](./reconnaissance_passive.md)
   - [Active](./reconnaissance_active.md)
 - [Web Application Pentesting](./web_application_pentesting.md)
 - [Remote shells](./remote-shells.md)
