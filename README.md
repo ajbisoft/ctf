@@ -2,6 +2,7 @@
 
 ## My CTF/Pentesting notes aka cheat-sheet:
 
+- [Tools of the trade](./tools.md)
 - Reconnaissance
   - [Passive](./reconnaissance_passive.md)
   - [Active](./reconnaissance_active.md)

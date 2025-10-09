@@ -39,6 +39,46 @@ By crafting specific search queries, known as Google Dorks, you can find informa
 - To unearth log files with passwords: `filetype:log "password" site:example.com`
 - To discover backup directories: `intitle:"index of" "backup" site:example.com`
 
+## Subdomain enumeration
+
+### subfinder
+
+`subfinder -d <target> -all > domains1.txt`
+
+### crt.sh
+
+Go to https://crt.sh website and enumerate for issued certificates
+
+### assetfinder
+
+`assetfinder <target> -subs-only > domains2.txt`
+
+### chaos.projectdiscovery.io
+
+Use public bug bounty data from https://chaos.projectdiscovery.io
+
+### Sort outputs
+
+Sort outputs from previous commands to make a unique list of domains:
+
+`sort -u domain1.txt domain2.txt > domains.txt`
+
+### Check for live domains
+
+`cat domains.txt | httpx -sc > status.txt`
+
+### Use ffuf
+
+Ie. <subdomain> wordlist can be: `/usr/share/seclists/Discovery/DNS/cubdomains-top1million-20000.txt`.
+
+`ffuf -u http://FUZZ.<target> -w <subdomain_wordlist> -o fuff.txt`
+
+### subzy
+
+Can find somains that ar vulnerable for domain takeover (ie. to be used in phishing campaign)
+
+`subzy run --targets domains.txt`
+
 ## Other sources for passive recon
 
 - **Websites** provide attackers with information on organizational structure and technologies and alert them to potential weak spots. For example, attackers can exploit outdated content management systems (CMS) on company websites and use unpatched vulnerabilities to access internal databases.
